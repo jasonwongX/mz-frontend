@@ -7,7 +7,7 @@ import notification from 'ant-design-vue/es/notification'
 import { setDocumentTitle, domTitle } from '@/utils/domUtil'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 import { i18nRender } from '@/locales'
-import { generatorDynamicRouter } from '@/router/generator-routers'
+// import { generatorDynamicRouter } from '@/router/generator-routers'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
@@ -31,10 +31,12 @@ router.beforeEach((to, from, next) => {
         store
           .dispatch('GetInfo')
           .then(res => {
-            // generate dynamic router
-            generatorDynamicRouter(token).then(routers => {
-              store.commit('SET_ROUTERS', routers)
-
+            // generate dynamic router2
+            // generatorDynamicRouter(token).then(routers => {
+            //   store.commit('SET_ROUTERS', routers)
+              const roles = res.result && res.result.role
+              // generate dynamic router
+              store.dispatch('GenerateRoutes', { roles }).then(() => {
               // 根据roles权限生成可访问的路由表
               // 动态添加可访问路由表
               // VueRouter@3.5.0+ New API
