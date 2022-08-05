@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <page-header-wrapper>
     <a-row :gutter="24">
       <a-col :sm="24" :md="12" :xl="6" :style="{ marginBottom: '24px' }">
         <chart-card :loading="loading" :title="$t('dashboard.analysis.total-sales')" total="￥126,560">
@@ -208,11 +208,13 @@
         </a-col>
       </a-row>
     </div>
-  </div>
+  </page-header-wrapper>
 </template>
 
 <script>
 import moment from 'moment'
+import { PageHeaderWrapper } from '@ant-design-vue/pro-layout'
+
 import {
   ChartCard,
   MiniArea,
@@ -315,7 +317,8 @@ export default {
     Bar,
     Trend,
     NumberInfo,
-    MiniSmoothArea
+    MiniSmoothArea,
+    PageHeaderWrapper
   },
   data () {
     return {

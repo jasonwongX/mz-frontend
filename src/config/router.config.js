@@ -13,63 +13,52 @@ export const asyncRouterMap = [
     name: 'index',
     component: BasicLayout,
     meta: { title: 'menu.home' },
-    redirect: '/dashboard/workplace',
+    redirect: '/dashboard',
     children: [
       // dashboard
       {
         path: '/dashboard',
         name: 'dashboard',
-        redirect: '/dashboard/workplace',
-        component: RouteView,
-        meta: { title: 'menu.dashboard', keepAlive: true, icon: bxAnaalyse, permission: ['dashboard'] },
-        children: [
-          {
-            path: '/dashboard/analysis/:pageNo([1-9]\\d*)?',
-            name: 'Analysis',
-            component: () => import('@/views/dashboard/Analysis'),
-            meta: { title: 'menu.dashboard.analysis', keepAlive: false, permission: ['dashboard'] }
-          },
-          {
-            path: '/dashboard/workplace',
-            name: 'Workplace',
-            component: () => import('@/views/dashboard/Workplace'),
-            meta: { title: 'menu.dashboard.workplace', keepAlive: true, permission: ['dashboard'] }
-          }
-        ]
+        component: () => import('@/views/dashboard/Workplace'),
+        meta: { title: '首页', keepAlive: true, icon: bxAnaalyse, permission: ['dashboard'] }
       },
-      // forms
+
       {
-        path: '/form',
-        redirect: '/form/base-form',
+        path: '/insignt',
+        name: 'insignt',
+        redirect: '/insignt/my',
         component: RouteView,
-        meta: { title: 'menu.form', icon: 'form', permission: ['form'] },
+        meta: { title: '效能洞察', keepAlive: true, icon: bxAnaalyse, permission: ['dashboard'] },
         children: [
           {
-            path: '/form/base-form',
-            name: 'BaseForm',
-            component: () => import('@/views/form/basicForm'),
-            meta: { title: 'menu.form.basic-form', keepAlive: true, permission: ['form'] }
+            path: '/insignt/my/:pageNo([1-9]\\d*)?',
+            name: 'myInsight',
+            component: () => import('@/views/dashboard/Analysis'),
+            meta: { title: '我的视图', keepAlive: false, permission: ['dashboard'] }
           },
           {
-            path: '/form/step-form',
-            name: 'StepForm',
-            component: () => import('@/views/form/stepForm/StepForm'),
-            meta: { title: 'menu.form.step-form', keepAlive: true, permission: ['form'] }
+            path: '/insignt/team/:pageNo([1-9]\\d*)?',
+            name: 'teamInsight',
+            component: () => import('@/views/dashboard/Analysis'),
+            meta: { title: '团队视图', keepAlive: false, permission: ['dashboard'] }
           },
           {
-            path: '/form/advanced-form',
-            name: 'AdvanceForm',
-            component: () => import('@/views/form/advancedForm/AdvancedForm'),
-            meta: { title: 'menu.form.advanced-form', keepAlive: true, permission: ['form'] }
+            path: '/insignt/company/:pageNo([1-9]\\d*)?',
+            name: 'companyInsight',
+            component: () => import('@/views/dashboard/Analysis'),
+            meta: { title: '组织视图', keepAlive: false, permission: ['dashboard'] }
           }
+
         ]
       },
+
       // list
       {
         path: '/list',
         name: 'list',
         component: RouteView,
         redirect: '/list/table-list',
+        hidden: true,
         meta: { title: 'menu.list', icon: 'table', permission: ['table'] },
         children: [
           {
@@ -121,35 +110,13 @@ export const asyncRouterMap = [
         ]
       },
 
-      // profile
-      {
-        path: '/profile',
-        name: 'profile',
-        component: RouteView,
-        redirect: '/profile/basic',
-        meta: { title: 'menu.profile', icon: 'profile', permission: ['profile'] },
-        children: [
-          {
-            path: '/profile/basic',
-            name: 'ProfileBasic',
-            component: () => import('@/views/profile/basic'),
-            meta: { title: 'menu.profile.basic', permission: ['profile'] }
-          },
-          {
-            path: '/profile/advanced',
-            name: 'ProfileAdvanced',
-            component: () => import('@/views/profile/advanced/Advanced'),
-            meta: { title: 'menu.profile.advanced', permission: ['profile'] }
-          }
-        ]
-      },
-
       // account
       {
         path: '/account',
         component: RouteView,
         redirect: '/account/center',
         name: 'account',
+        hidden: true,
         meta: { title: 'menu.account', icon: 'user', keepAlive: true, permission: ['user'] },
         children: [
           {
@@ -211,8 +178,57 @@ export const asyncRouterMap = [
         ]
       },
 
-      // other
+      // system setting
+      {
+        path: '/settings',
+        name: 'settings',
+        component: RouteView,
+        meta: { title: '基础信息管理', icon: 'slack', permission: [ 'dashboard' ] },
+        redirect: '/settings/project-list',
+        children: [
+          {
+            path: '/settings/project-list/:pageNo([1-9]\\d*)?',
+            name: 'ProjectList',
+            component: () => import('@/views/settings/ProjectList'),
+            meta: { title: '项目列表', keepAlive: true, permission: ['table'] }
+          },
+          {
+            path: '/settings/project-list/add',
+            name: 'AddProject',
+            hidden: true,
+            component: () => import('@/views/settings/modules/AddProject'),
+            meta: { title: 'menu.form.advanced-form', keepAlive: true, permission: ['form'] }
+          },
+          {
+            path: '/settings/project-list/detail',
+            name: 'ProjectDetail',
+            hidden: true,
+            component: () => import('@/views/settings/modules/ProjectDetail'),
+            meta: { title: 'menu.profile.advanced', permission: ['profile'] }
+          },
+          {
+            path: '/settings/user-list',
+            name: 'UserList',
+            component: () => import('@/views/settings/UserList'),
+            meta: { title: '用户列表', keepAlive: true }
+          },
+          {
+            path: '/settings/role-list',
+            name: 'RoleList',
+            component: () => import('@/views/settings/RoleList'),
+            meta: { title: '角色列表', keepAlive: true }
+          },
+          {
+            path: '/settings/permission-list',
+            name: 'PermissionList',
+            component: () => import('@/views/settings/PermissionList'),
+            meta: { title: '权限列表', keepAlive: true }
+          }
+        ]
+      }
 
+      // other
+      /**
       {
         path: '/other',
         name: 'otherPage',
@@ -272,6 +288,7 @@ export const asyncRouterMap = [
           }
         ]
       }
+      */
     ]
   },
   {
