@@ -20,7 +20,7 @@ export const asyncRouterMap = [
         path: '/dashboard',
         name: 'dashboard',
         component: () => import('@/views/dashboard/Workplace'),
-        meta: { title: '首页', keepAlive: true, icon: bxAnaalyse, permission: ['dashboard'] }
+        meta: { title: '首页', keepAlive: true, icon: 'dashboard', permission: ['dashboard'] }
       },
 
       {
@@ -31,83 +31,45 @@ export const asyncRouterMap = [
         meta: { title: '效能洞察', keepAlive: true, icon: bxAnaalyse, permission: ['dashboard'] },
         children: [
           {
-            path: '/insignt/my/:pageNo([1-9]\\d*)?',
-            name: 'myInsight',
-            component: () => import('@/views/dashboard/Analysis'),
-            meta: { title: '我的视图', keepAlive: false, permission: ['dashboard'] }
-          },
-          {
-            path: '/insignt/team/:pageNo([1-9]\\d*)?',
-            name: 'teamInsight',
-            component: () => import('@/views/dashboard/Analysis'),
-            meta: { title: '团队视图', keepAlive: false, permission: ['dashboard'] }
-          },
-          {
-            path: '/insignt/company/:pageNo([1-9]\\d*)?',
-            name: 'companyInsight',
-            component: () => import('@/views/dashboard/Analysis'),
-            meta: { title: '组织视图', keepAlive: false, permission: ['dashboard'] }
-          }
-
-        ]
-      },
-
-      // list
-      {
-        path: '/list',
-        name: 'list',
-        component: RouteView,
-        redirect: '/list/table-list',
-        hidden: true,
-        meta: { title: 'menu.list', icon: 'table', permission: ['table'] },
-        children: [
-          {
-            path: '/list/table-list/:pageNo([1-9]\\d*)?',
-            name: 'TableListWrapper',
-            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
-            component: () => import('@/views/list/TableList'),
-            meta: { title: 'menu.list.table-list', keepAlive: true, permission: ['table'] }
-          },
-          {
-            path: '/list/basic-list',
-            name: 'BasicList',
-            component: () => import('@/views/list/BasicList'),
-            meta: { title: 'menu.list.basic-list', keepAlive: true, permission: ['table'] }
-          },
-          {
-            path: '/list/card',
-            name: 'CardList',
-            component: () => import('@/views/list/CardList'),
-            meta: { title: 'menu.list.card-list', keepAlive: true, permission: ['table'] }
-          },
-          {
-            path: '/list/search',
-            name: 'SearchList',
-            component: () => import('@/views/list/search/SearchLayout'),
-            redirect: '/list/search/article',
-            meta: { title: 'menu.list.search-list', keepAlive: true, permission: ['table'] },
+            path: '/insight/index',
+            name: 'InsigntIndex',
+            component: () => import('@/views/insight/modules/InsightViewLayout'),
+            redirect: '/insignt/my',
+            meta: { title: '洞察视图', keepAlive: true, permission: ['table'] },
             children: [
               {
-                path: '/list/search/article',
-                name: 'SearchArticles',
-                component: () => import('../views/list/search/Article'),
-                meta: { title: 'menu.list.search-list.articles', permission: ['table'] }
+                path: '/insignt/my/:pageNo([1-9]\\d*)?',
+                name: 'myInsight',
+                component: () => import('@/views/insight/MyInsight'),
+                meta: { title: '我的视图', keepAlive: false, permission: ['dashboard'] }
               },
               {
-                path: '/list/search/project',
-                name: 'SearchProjects',
-                component: () => import('../views/list/search/Projects'),
-                meta: { title: 'menu.list.search-list.projects', permission: ['table'] }
+                path: '/insignt/team/:pageNo([1-9]\\d*)?',
+                name: 'teamInsight',
+                component: () => import('@/views/insight/TeamInsight'),
+                meta: { title: '团队视图', keepAlive: false, permission: ['dashboard'] }
               },
               {
-                path: '/list/search/application',
-                name: 'SearchApplications',
-                component: () => import('../views/list/search/Applications'),
-                meta: { title: 'menu.list.search-list.applications', permission: ['table'] }
+                path: '/insignt/company/:pageNo([1-9]\\d*)?',
+                name: 'companyInsight',
+                component: () => import('@/views/insight/CompanyInsight'),
+                meta: { title: '组织视图', keepAlive: false, permission: ['dashboard'] }
               }
             ]
+          },
+          {
+            path: '/insight/indicator',
+            name: 'indicator',
+            component: () => import('@/views/insight/Indicator'),
+            meta: { title: '指标库', keepAlive: true, permission: ['table'] }
+          },
+          {
+            path: '/list/metric-report',
+            name: 'MetricReport',
+            component: () => import('@/views/insight/MetricReport'),
+            meta: { title: '度量报表', keepAlive: true, permission: ['table'] }
           }
-        ]
+      ]
       },
 
       // account

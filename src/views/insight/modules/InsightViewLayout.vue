@@ -4,15 +4,6 @@
     :tab-active-key="tabActiveKey"
     :tab-change="handleTabChange"
   >
-    <template v-slot:content>
-      <div class="ant-pro-page-header-search">
-        <a-input-search size="large" style="width: 80%; max-width: 522px;">
-          <template v-slot:enterButton>
-            搜索
-          </template>
-        </a-input-search>
-      </div>
-    </template>
     <router-view />
   </page-header-wrapper>
 </template>
@@ -20,24 +11,24 @@
 <script>
 const getActiveKey = (path) => {
   switch (path) {
-    case '/list/search/article':
+    case '/insignt/my':
       return '1'
-    case '/list/search/project':
+    case '/insignt/team':
       return '2'
-    case '/list/search/application':
+    case '/insignt/company':
       return '3'
     default:
       return '1'
   }
 }
 export default {
-  name: 'SearchLayout',
+  name: 'InsightViewLayout',
   data () {
     return {
       tabList: [
-        { key: '1', tab: '文章' },
-        { key: '2', tab: '项目' },
-        { key: '3', tab: '应用' }
+        { key: '1', tab: '个人视图' },
+        { key: '2', tab: '团队视图' },
+        { key: '3', tab: '组织视图' }
       ],
       tabActiveKey: '1',
       search: true
@@ -55,16 +46,16 @@ export default {
       this.tabActiveKey = key
       switch (key) {
         case '1':
-          this.$router.push('/list/search/article')
+          this.$router.push('/insignt/my')
           break
         case '2':
-          this.$router.push('/list/search/project')
+          this.$router.push('/insignt/team')
           break
         case '3':
-          this.$router.push('/list/search/application')
+          this.$router.push('/insignt/company')
           break
         default:
-          this.$router.push('/workplace')
+          this.$router.push('/')
       }
     }
   }
