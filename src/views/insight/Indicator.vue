@@ -2,14 +2,9 @@
   <page-header-wrapper
     :tab-list="tabList"
     :tab-active-key="tabActiveKey"
-    :tab-change="(key) => {
-      this.tabActiveKey = key
-    }"
-    content="段落示意：蚂蚁金服务设计平台 ant.design，用最小的工作量，无缝接入蚂蚁金服生态， 提供跨越设计与开发的体验解决方案。"
+    :tab-change="(key)=>tabChange(key)"
+    content="从交付效率、交付质量和工程能力三个维度设置对应指标，作为研发效能度量参考值。"
   >
-    <template v-slot:extraContent>
-      <div style="width: 155px; margin-top: -20px;"><img style="width: 100%" :src="extraImage" /></div>
-    </template>
     <a-list
       rowKey="id"
       :grid="{gutter: 24, lg: 3, md: 2, sm: 1, xs: 1}"
@@ -17,23 +12,17 @@
       class="card-list"
     >
       <a-list-item slot="renderItem" slot-scope="item">
-        <template v-if="!item || item.id === undefined">
-          <a-button class="new-btn" type="dashed">
-            <a-icon type="plus"/>
-            新增产品
-          </a-button>
-        </template>
-        <template v-else>
+        <template >
           <a-card :hoverable="true">
+            <img
+              slot="cover"
+              :alt="item.title"
+              :src="item.img"
+            />
             <a-card-meta>
               <a slot="title">{{ item.title }}</a>
-              <a-avatar class="card-avatar" slot="avatar" :src="item.avatar" size="large"/>
               <div class="meta-content" slot="description">{{ item.content }}</div>
             </a-card-meta>
-            <template class="ant-card-actions" slot="actions">
-              <a>操作一</a>
-              <a>操作二</a>
-            </template>
           </a-card>
         </template>
       </a-list-item>
@@ -42,36 +31,87 @@
 </template>
 
 <script>
+const dataSource = [
+  {
+    id: 1,
+    title: '需求前置时间',
+    img: require('@/assets/images/requirement-lead-time.png'),
+    content: '需求从受理状态到进入开发阶段的时长（单位：天）。',
+    type: 1
+  },
+  {
+    id: 2,
+    title: '需求交付周期',
+    img: require('@/assets/images/requirement-delivery-cycle.png'),
+    content: '描述从需求受理到发布的时间（单位：天）。',
+    type: 1
+  },
+  {
+    id: 3,
+    title: '需求投产数量',
+    img: require('@/assets/images/requirement-delivery-count.png'),
+    content: '描述交付版本的已下发的需求数量（单位：个）。',
+    type: 1
+  },
+  {
+    id: 4,
+    title: '线上故障数',
+    img: require('@/assets/images/quality-online-bug-count.png'),
+    content: '描述已下发的需求中出现故障的数量（单位：个）。',
+    type: 2
+  },
+  {
+    id: 5,
+    title: '故障恢复时间',
+    img: require('@/assets/images/quality-bug-fix-time.png'),
+    content: '描述从故障发生到故障修复所需的时间（单位：分钟）。',
+    type: 2
+  },
+  {
+    id: 6,
+    title: '构建频率',
+    img: require('@/assets/images/capability-build-frequency.png'),
+    content: '单位时间内（每日）的构建次数（单位：次）。',
+    type: 3
+  },
+  {
+    id: 7,
+    title: '单元测试覆盖率',
+    img: require('@/assets/images/capability-unit-test-cover.png'),
+    content: '包含类、方法和行的单元测试覆盖率（单位：%）。',
+    type: 3
+  }
+]
 
-const dataSource = []
-dataSource.push({})
-for (let i = 0; i < 11; i++) {
-  dataSource.push({
-    id: i,
-    title: 'Alipay',
-    avatar: 'https://gw.alipayobjects.com/zos/rmsportal/WdGqmHpayyMjiEhcKoVE.png',
-    content: '在中台产品的研发过程中，会出现不同的设计规范和实现方式，但其中往往存在很多类似的页面和组件，这些类似的组件会被抽离成一套标准规范。'
-  })
-}
-
+const _ = require('lodash')
 export default {
   name: 'CardList',
   data () {
     this.tabList = [
-      { key: 'tab1', tab: '快速开始' },
-      { key: 'tab2', tab: '产品简介' },
-      { key: 'tab3', tab: '产品文档' }
+      { key: 'all', tab: '全部指标库' },
+      { key: 'efficiency', tab: '交付效率' },
+      { key: 'quality', tab: '交付质量' },
+      { key: 'capability', tab: '工程能力' }
     ]
     return {
-      tabActiveKey: 'tab1',
-
-      extraImage: 'https://gw.alipayobjects.com/zos/rmsportal/RzwpdLnhmvDJToTdfDPe.png',
+      tabActiveKey: 'all',
       dataSource
     }
   },
   methods: {
-    testFun () {
-      this.$message.info('快速开始被点击！')
+    tabChange (key) {
+      this.tabActiveKey = key
+      this.dataSource = _.filter(dataSource, (item) => {
+        if (key === 'efficiency') {
+          return item.type === 1
+        } else if (key === 'quality') {
+          return item.type === 2
+        } else if (key === 'capability') {
+          return item.type === 3
+        } else {
+          return item.type !== 0
+        }
+      })
     }
   }
 }
@@ -86,9 +126,12 @@ export default {
         color: @primary-color;
       }
     }
+    /deep/ .ant-card-body {
+      padding: 12px 16px;
+    }
 
     /deep/ .ant-card-meta-title {
-      margin-bottom: 12px;
+      margin-bottom: 8px;
 
       &>a {
         display: inline-block;
@@ -102,11 +145,9 @@ export default {
       overflow: hidden;
       text-overflow: ellipsis;
       display: -webkit-box;
-      height: 64px;
+      height: 40px;
       -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
-
-      margin-bottom: 1em;
     }
   }
 

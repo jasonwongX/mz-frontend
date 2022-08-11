@@ -31,6 +31,12 @@ export const asyncRouterMap = [
         meta: { title: '效能洞察', keepAlive: true, icon: bxAnaalyse, permission: ['dashboard'] },
         children: [
           {
+            path: '/insight/indicator',
+            name: 'indicator',
+            component: () => import('@/views/insight/Indicator'),
+            meta: { title: '指标库', keepAlive: true, permission: ['table'] }
+          },
+          {
             path: '/insight/index',
             name: 'InsigntIndex',
             component: () => import('@/views/insight/modules/InsightViewLayout'),
@@ -56,12 +62,6 @@ export const asyncRouterMap = [
                 meta: { title: '组织视图', keepAlive: false, permission: ['dashboard'] }
               }
             ]
-          },
-          {
-            path: '/insight/indicator',
-            name: 'indicator',
-            component: () => import('@/views/insight/Indicator'),
-            meta: { title: '指标库', keepAlive: true, permission: ['table'] }
           },
           {
             path: '/list/metric-report',
