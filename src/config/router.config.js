@@ -13,15 +13,15 @@ export const asyncRouterMap = [
     name: 'index',
     component: BasicLayout,
     meta: { title: 'menu.home' },
-    redirect: '/dashboard',
+    redirect: '/insignt/my',
     children: [
       // dashboard
-      {
-        path: '/dashboard',
-        name: 'dashboard',
-        component: () => import('@/views/dashboard/Workplace'),
-        meta: { title: '首页', keepAlive: true, icon: 'dashboard', permission: ['dashboard'] }
-      },
+      // {
+      //   path: '/dashboard',
+      //   name: 'dashboard',
+      //   component: () => import('@/views/dashboard/Workplace'),
+      //   meta: { title: '首页', keepAlive: true, icon: 'dashboard', permission: ['dashboard'] }
+      // },
 
       {
         path: '/insignt',
@@ -47,7 +47,7 @@ export const asyncRouterMap = [
                 path: '/insignt/my/:pageNo([1-9]\\d*)?',
                 name: 'myInsight',
                 component: () => import('@/views/insight/MyInsight'),
-                meta: { title: '我的视图', keepAlive: false, permission: ['dashboard'] }
+                meta: { title: '个人视图', keepAlive: false, permission: ['dashboard'] }
               },
               {
                 path: '/insignt/team/:pageNo([1-9]\\d*)?',

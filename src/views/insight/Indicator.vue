@@ -3,7 +3,7 @@
     :tab-list="tabList"
     :tab-active-key="tabActiveKey"
     :tab-change="(key)=>tabChange(key)"
-    content="从交付效率、交付质量和工程能力三个维度设置对应指标，作为研发效能度量参考值。"
+    content="从交付效率、交付质量和工程能力三个维度设置对应指标，作为研发效能度量指标。"
   >
     <a-list
       rowKey="id"
@@ -15,6 +15,7 @@
         <template >
           <a-card :hoverable="true">
             <img
+              class="img-cls"
               slot="cover"
               :alt="item.title"
               :src="item.img"
@@ -148,6 +149,9 @@ export default {
       height: 40px;
       -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
+    }
+    .img-cls {
+      min-height: 280px;
     }
   }
 
