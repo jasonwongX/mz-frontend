@@ -126,7 +126,6 @@
 </template>
 
 <script>
-import { PageHeaderWrapper } from '@ant-design-vue/pro-layout'
 import BarChart from './components/BarChart'
 import LineChart from './components/LineChart'
 import StackBarChart from './components/StackBarChart'
@@ -138,7 +137,6 @@ export default {
   name: 'MyInsight',
   mixins: [baseMixin],
   components: {
-    PageHeaderWrapper,
     BarChart,
     LineChart,
     StackBarChart,

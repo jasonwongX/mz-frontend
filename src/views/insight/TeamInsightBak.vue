@@ -212,7 +212,6 @@
 
 <script>
 import moment from 'moment'
-import { PageHeaderWrapper } from '@ant-design-vue/pro-layout'
 
 import {
   ChartCard,
@@ -316,8 +315,7 @@ export default {
     Bar,
     Trend,
     NumberInfo,
-    MiniSmoothArea,
-    PageHeaderWrapper
+    MiniSmoothArea
   },
   data () {
     return {
