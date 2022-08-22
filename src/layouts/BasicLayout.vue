@@ -36,7 +36,7 @@
       </div>
     </template>
 
-    <setting-drawer v-if="isDev" :settings="settings" @change="handleSettingChange">
+    <setting-drawer v-if="false" :settings="settings" @change="handleSettingChange">
       <div style="margin: 12px 0;">
         This is SettingDrawer custom footer content.
       </div>

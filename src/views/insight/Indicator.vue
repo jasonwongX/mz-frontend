@@ -151,7 +151,9 @@ export default {
       -webkit-box-orient: vertical;
     }
     .img-cls {
-      min-height: 280px;
+      background: #f6f6f6;
+      padding: 24px 36px;
+      min-height: 240px;
     }
   }
 
