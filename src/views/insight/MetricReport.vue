@@ -15,21 +15,19 @@
       <a-list size="large" :pagination="{showSizeChanger: true, showQuickJumper: true, pageSize: 5, total: 50}">
         <a-list-item :key="index" v-for="(item, index) in data">
           <a-list-item-meta :description="item.description">
-            <a slot="title" class="title">{{ item.title }}</a>
+            <a slot="title" class="title" @click="gotoReportView(item)">{{ item.title }}</a>
           </a-list-item-meta>
           <div slot="actions">
             <a @click="edit(item)">编辑</a>
           </div>
           <div slot="actions">
-            <a @click="edit(item)">详情</a>
+            <a class="delete-link">删除</a>
           </div>
 
           <div class="list-content">
             <div class="list-content-item">
-              <p>{{ getIndicatorsName(item) }}</p>
-            </div>
-            <div class="list-content-item">
-              <p>{{ getTimeRange(item) }} | {{ getType(item) }}</p>
+              <span>{{ getTimeRange(item) }} </span>
+              <p>{{ getType(item) }}</p>
             </div>
             <div class="list-content-item">
               <span>{{ item.owner }} 创建于 </span>
@@ -219,6 +217,9 @@ export default {
           maskClosable: false
         })
     },
+    gotoReportView (item) {
+      this.$router.push({ path: '/metric-report/detailView' })
+    },
     getType (item) {
       const result = _.find(this.type, ['value', item.type])
       return result.name
@@ -246,6 +247,13 @@ export default {
   margin-top: 24px;
   .title {
     color: rgba(0, 0, 0, .85);
+    font-size: 16px;
+    &:hover {
+      color: #1890ff;
+    }
+  }
+  .delete-link {
+    color: #ee7255;
   }
 }
 .list-content-item {

@@ -64,10 +64,17 @@ export const asyncRouterMap = [
             ]
           },
           {
-            path: '/list/metric-report',
+            path: '/metric-report',
             name: 'MetricReport',
             component: () => import('@/views/insight/MetricReport'),
             meta: { title: '度量报表', keepAlive: true, permission: ['table'] }
+          },
+          {
+            path: '/metric-report/detailView',
+            name: 'MetricReportDetail',
+            component: () => import('@/views/insight/MetricReportView'),
+            hidden: true,
+            meta: { title: '度量报表结果', keepAlive: true, permission: ['table'] }
           }
       ]
       },
