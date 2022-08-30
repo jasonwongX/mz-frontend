@@ -35,6 +35,14 @@ export function getServiceList (parameter) {
   })
 }
 
+export function getProjectList (parameter) {
+  return request({
+    url: '/project/list',
+    method: 'get',
+    params: parameter
+  })
+}
+
 export function getPermissions (parameter) {
   return request({
     url: api.permissionNoPager,

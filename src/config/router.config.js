@@ -162,6 +162,12 @@ export const asyncRouterMap = [
             meta: { title: '项目列表', keepAlive: true, permission: ['table'] }
           },
           {
+            path: '/settings/key-project/:pageNo([1-9]\\d*)?',
+            name: 'KeyProject',
+            component: () => import('@/views/settings/KeyProjectList'),
+            meta: { title: '重点工程', keepAlive: true, permission: ['table'] }
+          },
+          {
             path: '/settings/project-list/add',
             name: 'AddProject',
             hidden: true,
