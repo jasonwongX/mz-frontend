@@ -165,7 +165,7 @@ export const asyncRouterMap = [
             path: '/settings/key-project/:pageNo([1-9]\\d*)?',
             name: 'KeyProject',
             component: () => import('@/views/settings/KeyProjectList'),
-            meta: { title: '重点工程', keepAlive: true, permission: ['table'] }
+            meta: { title: '重点工程管理', keepAlive: true, permission: ['table'] }
           },
           {
             path: '/settings/project-list/add',
@@ -179,6 +179,13 @@ export const asyncRouterMap = [
             name: 'ProjectDetail',
             hidden: true,
             component: () => import('@/views/settings/modules/ProjectDetail'),
+            meta: { title: 'menu.profile.advanced', permission: ['profile'] }
+          },
+          {
+            path: '/settings/key-project/detail',
+            name: 'ProjectDetail',
+            hidden: true,
+            component: () => import('@/views/settings/modules/KeyProjectDetail'),
             meta: { title: 'menu.profile.advanced', permission: ['profile'] }
           },
           {

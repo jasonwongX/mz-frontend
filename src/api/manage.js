@@ -42,6 +42,13 @@ export function getProjectList (parameter) {
     params: parameter
   })
 }
+export function getKeyProjectList (parameter) {
+  return request({
+    url: '/project/key-project/list',
+    method: 'get',
+    params: parameter
+  })
+}
 
 export function getPermissions (parameter) {
   return request({

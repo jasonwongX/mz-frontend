@@ -4,58 +4,52 @@
       <div class="table-page-search-wrapper">
         <a-form layout="inline">
           <a-row :gutter="48">
-            <a-col :md="8" :sm="24">
-              <a-form-item label="规则编号">
-                <a-input v-model="queryParam.id" placeholder=""/>
+            <a-col :md="6" :sm="24">
+              <a-form-item label="工程名称">
+                <a-input v-model="queryParam.name" placeholder=""/>
               </a-form-item>
             </a-col>
-            <a-col :md="8" :sm="24">
-              <a-form-item label="使用状态">
+            <a-col :md="6" :sm="24">
+              <a-form-item label="工程状态">
                 <a-select v-model="queryParam.status" placeholder="请选择" default-value="0">
                   <a-select-option value="0">全部</a-select-option>
-                  <a-select-option value="1">关闭</a-select-option>
-                  <a-select-option value="2">运行中</a-select-option>
+                  <a-select-option value="1">调研</a-select-option>
+                  <a-select-option value="2">在建</a-select-option>
+                  <a-select-option value="3">上线</a-select-option>
                 </a-select>
               </a-form-item>
             </a-col>
-            <template v-if="advanced">
-              <a-col :md="8" :sm="24">
-                <a-form-item label="调用次数">
-                  <a-input-number v-model="queryParam.callNo" style="width: 100%"/>
-                </a-form-item>
-              </a-col>
-              <a-col :md="8" :sm="24">
-                <a-form-item label="更新日期">
-                  <a-date-picker v-model="queryParam.date" style="width: 100%" placeholder="请输入更新日期"/>
-                </a-form-item>
-              </a-col>
-              <a-col :md="8" :sm="24">
-                <a-form-item label="使用状态">
-                  <a-select v-model="queryParam.useStatus" placeholder="请选择" default-value="0">
-                    <a-select-option value="0">全部</a-select-option>
-                    <a-select-option value="1">关闭</a-select-option>
-                    <a-select-option value="2">运行中</a-select-option>
-                  </a-select>
-                </a-form-item>
-              </a-col>
-              <a-col :md="8" :sm="24">
-                <a-form-item label="使用状态">
-                  <a-select placeholder="请选择" default-value="0">
-                    <a-select-option value="0">全部</a-select-option>
-                    <a-select-option value="1">关闭</a-select-option>
-                    <a-select-option value="2">运行中</a-select-option>
-                  </a-select>
-                </a-form-item>
-              </a-col>
-            </template>
-            <a-col :md="!advanced && 8 || 24" :sm="24">
-              <span class="table-page-search-submitButtons" :style="advanced && { float: 'right', overflow: 'hidden' } || {} ">
+            <a-col :md="6" :sm="24">
+              <a-form-item label="业务板块">
+                <a-select v-model="queryParam.status" placeholder="请选择" default-value="0">
+                  <a-select-option value="-1">全部</a-select-option>
+                  <a-select-option value="0">其他</a-select-option>
+                  <a-select-option value="1">中后台</a-select-option>
+                  <a-select-option value="2">企金</a-select-option>
+                  <a-select-option value="3">零售</a-select-option>
+                  <a-select-option value="4">同业与金融市场</a-select-option>
+                </a-select>
+              </a-form-item>
+            </a-col>
+            <a-col :md="6" :sm="24">
+              <a-form-item label="pmo联系人">
+                <a-input v-model="queryParam.pmo_contact" placeholder=""/>
+              </a-form-item>
+            </a-col>
+            <a-col :md="6" :sm="24">
+              <a-form-item label="项目联系人">
+                <a-input v-model="queryParam.project_contact" placeholder=""/>
+              </a-form-item>
+            </a-col>
+            <a-col :md="6" :sm="24">
+              <a-form-item label="工程概括">
+                <a-input v-model="queryParam.generality" placeholder=""/>
+              </a-form-item>
+            </a-col>
+            <a-col :md="3" :sm="24">
+              <span class="table-page-search-submitButtons" style="float: 'right', overflow: 'hidden'">
                 <a-button type="primary" @click="$refs.table.refresh(true)">查询</a-button>
                 <a-button style="margin-left: 8px" @click="() => this.queryParam = {}">重置</a-button>
-                <a @click="toggleAdvanced" style="margin-left: 8px">
-                  {{ advanced ? '收起' : '展开' }}
-                  <a-icon :type="advanced ? 'up' : 'down'"/>
-                </a>
               </span>
             </a-col>
           </a-row>
@@ -74,6 +68,7 @@
             批量操作 <a-icon type="down" />
           </a-button>
         </a-dropdown>
+        <a-button type="primary" icon="download" @click="handleDownload" style="float:right">导出</a-button>
       </div>
 
       <s-table
@@ -86,14 +81,23 @@
         :rowSelection="rowSelection"
         showPagination="auto"
       >
-        <span slot="serial" slot-scope="text, record, index">
-          {{ index + 1 }}
+        <span slot="name" slot-scope="text">
+          <ellipsis :length="32" tooltip>{{ text }}</ellipsis>
         </span>
         <span slot="status" slot-scope="text">
           <a-badge :status="text | statusTypeFilter" :text="text | statusFilter" />
         </span>
-        <span slot="description" slot-scope="text">
-          <ellipsis :length="4" tooltip>{{ text }}</ellipsis>
+        <span slot="business_line" slot-scope="text">
+          {{ text | businessLineFilter }}
+        </span>
+        <span slot="pmo_contact" slot-scope="text">
+          {{ text }}
+        </span>
+        <span slot="project_contact" slot-scope="text">
+          {{ text }}
+        </span>
+        <span slot="generality" slot-scope="text">
+          <ellipsis :length="40" tooltip>{{ text }}</ellipsis>
         </span>
 
         <span slot="action" slot-scope="text, record">
@@ -120,32 +124,18 @@
 
 <script>
 import moment from 'moment'
+// import axios from 'axios'
 import { STable, Ellipsis } from '@/components'
-import { getRoleList, getServiceList } from '@/api/manage'
+import { getRoleList, getKeyProjectList } from '@/api/manage'
 import { PageHeaderWrapper } from '@ant-design-vue/pro-layout'
 
 import StepByStepModal from './modules/StepByStepModal'
 import CreateForm from './modules/CreateForm'
 const columns = [
+
   {
-    title: '#',
-    scopedSlots: { customRender: 'serial' }
-  },
-  {
-    title: '规则编号',
-    dataIndex: 'no'
-  },
-  {
-    title: '描述',
-    dataIndex: 'description',
-    scopedSlots: { customRender: 'description' }
-  },
-  {
-    title: '服务调用次数',
-    dataIndex: 'callNo',
-    sorter: true,
-    needTotal: true,
-    customRender: (text) => text + ' 次'
+    title: '工程名称',
+    dataIndex: 'name'
   },
   {
     title: '状态',
@@ -153,9 +143,22 @@ const columns = [
     scopedSlots: { customRender: 'status' }
   },
   {
-    title: '更新时间',
-    dataIndex: 'updatedAt',
-    sorter: true
+    title: '业务板块',
+    dataIndex: 'business_line',
+    scopedSlots: { customRender: 'business_line' }
+  },
+  {
+    title: 'pmo联系人',
+    dataIndex: 'pmo_contact'
+  },
+  {
+    title: '项目联系人',
+    dataIndex: 'project_contact'
+  },
+  {
+    title: '工程概括',
+    dataIndex: 'generality',
+    scopedSlots: { customRender: 'generality' }
   },
   {
     title: '操作',
@@ -168,24 +171,41 @@ const columns = [
 const statusMap = {
   0: {
     status: 'default',
-    text: '关闭'
+    text: '--'
   },
   1: {
-    status: 'processing',
-    text: '运行中'
+    status: 'default',
+    text: '调研'
   },
   2: {
-    status: 'success',
-    text: '已上线'
+    status: 'processing',
+    text: '在建'
   },
   3: {
-    status: 'error',
-    text: '异常'
+    status: 'success',
+    text: '已上线'
+  }
+}
+const businessLineMap = {
+  0: {
+    text: '其他'
+  },
+  1: {
+    text: '中后台'
+  },
+  2: {
+    text: '企金'
+  },
+  3: {
+    text: '零售'
+  },
+  4: {
+    text: '同业与金融市场'
   }
 }
 
 export default {
-  name: 'TableList',
+  name: 'KeyProjectList',
   components: {
     STable,
     Ellipsis,
@@ -208,7 +228,7 @@ export default {
       loadData: parameter => {
         const requestParameters = Object.assign({}, parameter, this.queryParam)
         console.log('loadData request parameters:', requestParameters)
-        return getServiceList(requestParameters)
+        return getKeyProjectList(requestParameters)
           .then(res => {
             return res.result
           })
@@ -220,6 +240,9 @@ export default {
   filters: {
     statusFilter (type) {
       return statusMap[type].text
+    },
+    businessLineFilter (type) {
+      return businessLineMap[type].text
     },
     statusTypeFilter (type) {
       return statusMap[type].status
@@ -241,7 +264,7 @@ export default {
       this.$router.push({ path: '/settings/project-list/add' })
     },
     handleCheckProject (record) {
-      this.$router.push({ path: '/settings/project-list/detail' })
+      this.$router.push({ path: '/settings/key-project/detail' })
     },
     handleAdd () {
       this.mdl = null
@@ -250,6 +273,13 @@ export default {
     handleEdit (record) {
       this.visible = true
       this.mdl = { ...record }
+    },
+    handleDownload () {
+      const link = document.createElement('a')
+      link.setAttribute('download', '')
+      link.href = `${process.env.BASE_URL}file/重点工程清单.xlsx`
+      link.click()
+      link.remove()
     },
     handleOk () {
       const form = this.$refs.createModal.form

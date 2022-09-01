@@ -155,12 +155,6 @@ export default {
   created () {
   },
   computed: {
-    rowSelection () {
-      return {
-        selectedRowKeys: this.selectedRowKeys,
-        onChange: this.onSelectChange
-      }
-    }
   },
   methods: {
     handleCheckProject (record) {
