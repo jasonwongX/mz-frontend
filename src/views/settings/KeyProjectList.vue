@@ -21,7 +21,7 @@
             </a-col>
             <a-col :md="6" :sm="24">
               <a-form-item label="业务板块">
-                <a-select v-model="queryParam.status" placeholder="请选择" default-value="0">
+                <a-select v-model="queryParam.business_line" placeholder="请选择" default-value="0">
                   <a-select-option value="-1">全部</a-select-option>
                   <a-select-option value="0">其他</a-select-option>
                   <a-select-option value="1">中后台</a-select-option>
