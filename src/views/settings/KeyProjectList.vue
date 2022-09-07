@@ -227,7 +227,6 @@ export default {
       // 加载数据方法 必须为 Promise 对象
       loadData: parameter => {
         const requestParameters = Object.assign({}, parameter, this.queryParam)
-        console.log('loadData request parameters:', requestParameters)
         return getKeyProjectList(requestParameters)
           .then(res => {
             return res.result
@@ -261,7 +260,7 @@ export default {
   },
   methods: {
     handleEditProject (record) {
-      this.$router.push({ path: '/settings/project-list/add' })
+      this.$router.push({ path: '/settings/key-project/edit' })
     },
     handleCheckProject (record) {
       this.$router.push({ path: '/settings/key-project/detail' })

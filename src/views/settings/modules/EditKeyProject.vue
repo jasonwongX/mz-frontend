@@ -1,82 +1,38 @@
 <template>
-  <page-header-wrapper content="高级表单常见于一次性输入和提交大批量数据的场景">
-    <a-card class="card" title="仓库管理" :bordered="false">
-      <repository-form ref="repository" :showSubmit="false" />
+  <page-header-wrapper title="重点工程编辑">
+    <a-card class="card" title="基础信息" :bordered="false">
+      <basic-project-info-form ref="basicInfo" :showSubmit="true" />
     </a-card>
-    <a-card class="card" title="任务管理" :bordered="false">
-      <task-form ref="task" :showSubmit="false" />
-    </a-card>
-
     <!-- table -->
-    <a-card>
-      <a-table
-        :columns="columns"
-        :dataSource="data"
-        :pagination="false"
-        :loading="memberLoading"
-      >
-        <template v-for="(col, i) in ['name', 'workId', 'department']" :slot="col" slot-scope="text, record">
-          <a-input
-            :key="col"
-            v-if="record.editable"
-            style="margin: -5px 0"
-            :value="text"
-            :placeholder="columns[i].title"
-            @change="e => handleChange(e.target.value, record.key, col)"
-          />
-          <template v-else>{{ text }}</template>
-        </template>
-        <template slot="operation" slot-scope="text, record">
-          <template v-if="record.editable">
-            <span v-if="record.isNew">
-              <a @click="saveRow(record)">添加</a>
-              <a-divider type="vertical" />
-              <a-popconfirm title="是否要删除此行？" @confirm="remove(record.key)">
-                <a>删除</a>
-              </a-popconfirm>
-            </span>
-            <span v-else>
-              <a @click="saveRow(record)">保存</a>
-              <a-divider type="vertical" />
-              <a @click="cancel(record.key)">取消</a>
-            </span>
-          </template>
-          <span v-else>
-            <a @click="toggle(record.key)">编辑</a>
-            <a-divider type="vertical" />
-            <a-popconfirm title="是否要删除此行？" @confirm="remove(record.key)">
-              <a>删除</a>
-            </a-popconfirm>
-          </span>
-        </template>
-      </a-table>
-      <a-button style="width: 100%; margin-top: 16px; margin-bottom: 8px" type="dashed" icon="plus" @click="newMember">新增成员</a-button>
+    <a-card
+      style="margin-top: 24px"
+      :bordered="false"
+      :tabList="operationTabList"
+      :activeTabKey="operationActiveTabKey"
+      @tabChange="(key) => {this.operationActiveTabKey = key}"
+    >
+      <a-row v-if="operationActiveTabKey==='1'" :gutter="12">
+        <a-col :span="8" v-for="(item,index) in events" :key="index" >
+          <event-card :eventItem="item">
+          </event-card>
+        </a-col>
+      </a-row>
+      <a-row v-if="operationActiveTabKey==='2'" :gutter="12">
+        <a-col :span="8" v-for="(item,index) in questions" :key="index" >
+          <question-card :questionItem="item">
+          </question-card>
+        </a-col>
+      </a-row>
     </a-card>
 
-    <!-- fixed footer toolbar -->
-    <footer-tool-bar :is-mobile="isMobile" :collapsed="sideCollapsed">
-      <span class="popover-wrapper">
-        <a-popover title="表单校验信息" overlayClassName="antd-pro-pages-forms-style-errorPopover" trigger="click" :getPopupContainer="trigger => trigger.parentNode">
-          <template slot="content">
-            <li v-for="item in errors" :key="item.key" @click="scrollToField(item.key)" class="antd-pro-pages-forms-style-errorListItem">
-              <a-icon type="cross-circle-o" class="antd-pro-pages-forms-style-errorIcon" />
-              <div class="">{{ item.message }}</div>
-              <div class="antd-pro-pages-forms-style-errorField">{{ item.fieldLabel }}</div>
-            </li>
-          </template>
-          <span class="antd-pro-pages-forms-style-errorIcon" v-if="errors.length > 0">
-            <a-icon type="exclamation-circle" />{{ errors.length }}
-          </span>
-        </a-popover>
-      </span>
-      <a-button type="primary" @click="validate" :loading="loading">提交</a-button>
-    </footer-tool-bar>
   </page-header-wrapper>
 </template>
 
 <script>
-import RepositoryForm from './RepositoryForm'
-import TaskForm from './TaskForm'
+import BasicProjectInfoForm from './BasicProjectInfoForm'
+import EventCard from './EventCard'
+import QuestionCard from './QuestionCard'
+
 import FooterToolBar from '@/components/FooterToolbar'
 import { baseMixin } from '@/store/app-mixin'
 
@@ -96,18 +52,57 @@ const fieldLabels = {
 }
 
 export default {
-  name: 'AdvancedForm',
+  name: 'EditKeyProject',
   mixins: [baseMixin],
   components: {
     FooterToolBar,
-    RepositoryForm,
-    TaskForm
+    BasicProjectInfoForm,
+    EventCard,
+    QuestionCard
   },
   data () {
     return {
       loading: false,
       memberLoading: false,
-
+      operationTabList: [
+        {
+          key: '1',
+          tab: '关键事项'
+        },
+        {
+          key: '2',
+          tab: '问题跟踪'
+        }
+      ],
+      operationActiveTabKey: '1',
+      events: [
+        {
+          time: '2022-08-08',
+          title: '成立领导小组和工作组',
+          description: '发布工程领导小组和工作小组成立通知；组建工作群，拟定“架构规划”“总账”“零售CIF”三个工作计划和双周报模板；'
+        },
+        {
+          time: '2022-05-01',
+          title: '成立研发工作组',
+          description: '成立预研工作组，发布关于成立“企业级业务中台暨分布式核心工程”技术工作小组的通知。'
+        }
+      ],
+            questions: [
+        {
+          description: '加快数据入湖进度',
+          name: '高小鹏',
+          status: 2,
+          progress: '计划开专题会议推进',
+          updatedAt: '2022/6/17'
+        },
+        {
+          description: '大数据平台等重要数据系统异地灾备问题研究',
+          name: '高小鹏',
+          status: 1,
+          progress: '计划开展专题会议进行研究',
+          updatedAt: '2022/8/17'
+        }
+      ],
       // table
       columns: [
         {
@@ -167,6 +162,9 @@ export default {
   methods: {
     handleSubmit (e) {
       e.preventDefault()
+    },
+    handleTabChange (key) {
+      this.tabActiveKey = key
     },
     newMember () {
       const length = this.data.length

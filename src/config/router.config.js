@@ -168,25 +168,25 @@ export const asyncRouterMap = [
             meta: { title: '重点工程管理', keepAlive: true, permission: ['table'] }
           },
           {
-            path: '/settings/project-list/add',
-            name: 'AddProject',
+            path: '/settings/key-project/edit',
+            name: 'EditKeyProject',
             hidden: true,
-            component: () => import('@/views/settings/modules/AddProject'),
-            meta: { title: 'menu.form.advanced-form', keepAlive: true, permission: ['form'] }
+            component: () => import('@/views/settings/modules/EditKeyProject'),
+            meta: { title: '添加项目', keepAlive: true, permission: ['form'] }
           },
           {
             path: '/settings/project-list/detail',
             name: 'ProjectDetail',
             hidden: true,
             component: () => import('@/views/settings/modules/ProjectDetail'),
-            meta: { title: 'menu.profile.advanced', permission: ['profile'] }
+            meta: { title: '项目详情', permission: ['profile'] }
           },
           {
             path: '/settings/key-project/detail',
             name: 'ProjectDetail',
             hidden: true,
             component: () => import('@/views/settings/modules/KeyProjectDetail'),
-            meta: { title: 'menu.profile.advanced', permission: ['profile'] }
+            meta: { title: '重点工程详情', permission: ['profile'] }
           },
           {
             path: '/settings/user-list',
